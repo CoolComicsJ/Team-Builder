@@ -11,6 +11,7 @@ class teammate {
         this.memberRole = memberRole;
     }
     
+    //Function to create a card with all the relevant data of a teammate in it ready to be added to the index.
     toHTML(){
         return `<div class="card g-2">
         <h5 class="card-header">${this.memberName}\r\n${this.memberRole}</h5>
@@ -22,6 +23,8 @@ class teammate {
     }
 }
 
+
+// All the required HTML that is to be written to a file with all its stylings.
 const generatehtml = (team) => `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +46,7 @@ const generatehtml = (team) => `<!DOCTYPE html>
 </html>`
 
 
-
+// Inquirer to ask the user the details of the member they wish to add.
 const teammateAdd = () => inquirer
 .prompt([
     {   
@@ -70,20 +73,23 @@ const teammateAdd = () => inquirer
         name: 'memberRole',
         type: 'list',
         message: 'What is this members role?',
-        choices: ['Intern', 'Manager', 'Engineer'],
+        choices: ['👨‍💼 Intern', '☕ Manager', '👓 Engineer'],
 
     }
 ]).then((data)=> {
-
+// Creating a new teammate and pushing it to the team array 
     console.log(data)
     team.push(new teammate (data.memberName, data.memberUsername, data.memberGiturl, data.memberEmail, data.memberRole))
 
+//Converting the teammate data to HTML and then writing that to the newly created index file.
     let result = "";
     team.forEach(element => {
         result += element.toHTML(); 
      })
     fs.writeFileSync(`index.html`, generatehtml(result))
 
+
+    // Asking the user if they want to add another member and if so, running the inquirer again. If not it exists the program
     inquirer.prompt([
         {
             name: 'answer',
@@ -98,4 +104,6 @@ const teammateAdd = () => inquirer
 
 }).catch(err => console.error) 
 
+
+//Initial ask at the running of the file.
 teammateAdd();
